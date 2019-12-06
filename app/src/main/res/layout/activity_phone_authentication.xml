@@ -4,52 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorGreenPrimary"
     tools:context=".PhoneAuthentication">
+
+
     <EditText
         android:id="@+id/phnoTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="77dp"
+        android:layout_width="243dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="172dp"
+        android:background="@drawable/rounded_edittext_register"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Please enter Phno:"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/verifyTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_width="254dp"
+        android:layout_height="66dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/rounded_edittext_register"
         android:ems="10"
-        android:inputType="textPersonName"
         android:hint="Please enter verification code:"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/phnoTxt" />
 
     <Button
-        android:id="@+id/verifyBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:text="verify"
+        android:id="@+id/createAccBtn"
+        android:layout_width="195dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/rounded_button"
+        android:text="Verify"
+        android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/verifyTxt" />
-
-    <Button
-        android:id="@+id/authenticateBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:text="Authenticate"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verifyBtn" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -59,7 +55,53 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.508" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="209dp"
+        android:layout_height="42dp"
+        android:text="Already a Member?"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/phnoTxt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.815" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="135dp"
+        android:layout_height="45dp"
+        android:text="New Member?"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/createAccountBtn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createAccBtn"
+        app:layout_constraintVertical_bias="0.151" />
+
+    <Button
+        android:id="@+id/createAccountBtn"
+        android:layout_width="146dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/rounded_button"
+        android:text="Create Account"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/createAccBtn"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

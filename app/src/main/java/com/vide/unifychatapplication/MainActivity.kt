@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
      override fun onStart() {
-        super.onStart();
+        super.onStart()
          if(mAuth.currentUser==null)
          {
              startActivity(Intent(this, PhoneAuthentication::class.java))

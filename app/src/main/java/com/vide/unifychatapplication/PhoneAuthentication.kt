@@ -3,7 +3,6 @@ package com.vide.unifychatapplication
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.FirebaseException
@@ -22,9 +21,12 @@ class PhoneAuthentication : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_phone_authentication)
         mAuth=FirebaseAuth.getInstance()
-        verifyBtn.setOnClickListener{
+        createAccBtn.setOnClickListener{
             progressBar.visibility=View.VISIBLE
             verify()
+        }
+        createAccountBtn.setOnClickListener{
+            startActivity(Intent(this,NewUserRegisteration::class.java))
         }
     }
 
@@ -51,6 +53,7 @@ class PhoneAuthentication : AppCompatActivity() {
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener{
                 if(it.isSuccessful){
+
                     Toast.makeText(this,"Logged in Successfully!!",Toast.LENGTH_LONG).show()
                     startActivity(Intent(this,MainActivity::class.java))
                 }
