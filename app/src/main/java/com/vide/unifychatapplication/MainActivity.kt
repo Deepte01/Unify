@@ -26,7 +26,10 @@ class MainActivity : AppCompatActivity() {
         super.onStart()
          if(mAuth.currentUser==null)
          {
-             startActivity(Intent(this, PhoneAuthentication::class.java))
+             val intent=Intent(this, PhoneAuthentication::class.java)
+             intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+             startActivity(intent)
+
          }
          else{
              Toast.makeText(this,"Already Signed In!!",Toast.LENGTH_LONG).show()

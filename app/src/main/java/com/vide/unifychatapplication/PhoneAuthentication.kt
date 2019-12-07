@@ -30,6 +30,7 @@ class PhoneAuthentication : AppCompatActivity() {
         }
     }
 
+
     private fun verificationCallBacks()
     {
         mcallbacks = object: PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -53,9 +54,11 @@ class PhoneAuthentication : AppCompatActivity() {
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener{
                 if(it.isSuccessful){
-
                     Toast.makeText(this,"Logged in Successfully!!",Toast.LENGTH_LONG).show()
-                    startActivity(Intent(this,MainActivity::class.java))
+                    //startActivity(Intent(this,FetchPhoneContacts::class.java))
+                    val intent=Intent(this, FetchPhoneContacts::class.java)
+                    intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
                 }
             }
     }

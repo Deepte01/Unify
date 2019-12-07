@@ -113,7 +113,7 @@ class NewUserRegisteration : AppCompatActivity() {
 
                     Toast.makeText(this,"Logged in Successfully!!", Toast.LENGTH_LONG).show()
                     createAccBtn.visibility=View.VISIBLE
-                   // startActivity(Intent(this,MainActivity::class.java))
+                    startActivity(Intent(this,FetchPhoneContacts::class.java))
                 }
             }
     }
