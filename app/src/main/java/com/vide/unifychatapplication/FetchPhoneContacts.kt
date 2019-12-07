@@ -1,22 +1,25 @@
 package com.vide.unifychatapplication
 
-import android.app.Activity
+//import android.app.Activity
+
 import android.content.ContentResolver
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
-import com.vide.unifychatapplication.ContactInfo
-import com.vide.unifychatapplication.R
-import kotlinx.android.synthetic.main.phonecontactstest.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.viewphonecontacts.*
+
 
 class FetchPhoneContacts : AppCompatActivity() {
 
@@ -96,50 +99,65 @@ class FetchPhoneContacts : AppCompatActivity() {
 
     }
 
-    private fun getContacts(): StringBuilder {
-       val builder = StringBuilder()
-       val resolver: ContentResolver = contentResolver;
-       val cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null,
-           null)
+    private fun getContacts() {
+        val cr = contentResolver
+        val cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
 
-       if (cursor!!.count > 0) {
-           while (cursor.moveToNext()) {
+        if (cur!!.count > 0) {
+            while (cur != null && cur.moveToNext()) {
+                val id = cur.getString(
+                    cur.getColumnIndex(ContactsContract.Contacts._ID)
+                )
+                val name = cur.getString(
+                    cur.getColumnIndex(
+                        ContactsContract.Contacts.DISPLAY_NAME
+                    )
+                )
 
-               val id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
-               val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-               val phoneNumber = (cursor.getString(
-                   cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))).toInt()
-
-               if (phoneNumber > 0) {
-                   val cursorPhone = contentResolver.query(
-                       ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                       null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + "=?", arrayOf(id), null)
-
-                   if(cursorPhone!!.count > 0) {
-                       while (cursorPhone.moveToNext()) {
-                           val phoneNumValue = cursorPhone.getString(
-                               cursorPhone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                           builder.append("Contact: ").append(name).append(", Phone Number: ").append(
-                               phoneNumValue).append("\n\n")
-                           Log.e("Name ===>",phoneNumValue)
-                           var contactinfo=ContactInfo(phoneNumValue,name,id.toInt())
-                           listofItems.add(contactinfo)
-                       }
-                   }
-                   cursorPhone.close()
-               }
-
-               //Log.d("FetchContacts:","Loaded: $builder")
-           }
-           contactsAdapter!!.notifyDataSetChanged()
-
-       }
-       else {
-         Toast.makeText(this,"No contacts Available!!",Toast.LENGTH_SHORT).show()
-       }
-       cursor.close()
-       return builder
+                if (cur.getInt(
+                        cur.getColumnIndex(
+                            ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0
+                ) {
+                    val pCur = cr.query(
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                        arrayOf(id), null
+                    )
+                    if (pCur!!.moveToNext()) {
+                        val phoneNo = pCur.getString(
+                            pCur.getColumnIndex(
+                                ContactsContract.CommonDataKinds.Phone.NUMBER))
+                        var contactinfo=ContactInfo(phoneNo,name,id.toInt())
+                        listofItems.add(contactinfo)
+                    }
+                    pCur.close()
+                }
+            }
+        }
+        cur?.close()
    }
+
+    fun checkContactInFirebase(phno:String)
+    {
+    var dbRef= FirebaseDatabase.getInstance().getReference("Users")
+    dbRef.orderByChild("phno".replace("""[-, ,]""".toRegex(),"")).equalTo(phno.replace("""[-, ,]""".toRegex(),"")).
+        addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onDataChange(datasnapshot: DataSnapshot) {
+                if (datasnapshot.getValue() != null){
+                    //it means user already registered
+                        Log.d("DB","exists!! ${datasnapshot.getValue()}")
+                }else{
+                    //It is new user
+
+                }
+            }
+
+        })
+    }
 
 
 }

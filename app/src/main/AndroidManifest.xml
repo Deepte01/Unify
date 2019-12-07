@@ -13,20 +13,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".NewUserRegisteration"></activity>
-        <activity android:name=".PhoneAuthentication" />
-        <activity android:name=".FetchPhoneContacts">
+        <activity android:name=".PhoneAuthentication" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".FetchPhoneContacts"/>
+        <activity android:name=".MainActivity"></activity>
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".MainActivity"></activity>
+
     </application>
 
 </manifest>

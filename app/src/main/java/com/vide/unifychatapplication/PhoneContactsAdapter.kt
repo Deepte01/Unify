@@ -4,11 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.vide.unifychatapplication.R
 import kotlinx.android.synthetic.main.row_contact_info.view.*
-import java.text.FieldPosition
 
 class PhoneContactsAdapter(val context:Context, val contacts: ArrayList<ContactInfo>): RecyclerView.Adapter<CustomViewHolder>(){
+
+    init {
+        setHasStableIds(true)
+    }
+
 
     override fun getItemCount(): Int {
         //return the count of list elements
@@ -27,9 +30,18 @@ class PhoneContactsAdapter(val context:Context, val contacts: ArrayList<ContactI
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         // bind the content to display for each row
+        holder
         val contact=contacts[position]
         holder.setData(contact)
     }
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
 
 }
 

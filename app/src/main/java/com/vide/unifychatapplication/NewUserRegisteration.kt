@@ -31,7 +31,7 @@ class NewUserRegisteration : AppCompatActivity() {
     private var selectedImageURI:Uri?=null
     private val IMAGE_FETCH_CODE:Int=100
     private var database= FirebaseDatabase.getInstance()
-    var myRef = database.getReference()
+    var myRef = database.getReference("Users")
     lateinit var  mcallbacks : PhoneAuthProvider.OnVerificationStateChangedCallbacks
     lateinit var  mAuth: FirebaseAuth
 
@@ -54,10 +54,11 @@ class NewUserRegisteration : AppCompatActivity() {
         createAccBtn.setOnClickListener{
             if(usernameTxt.text!=null && phnoTxt.text!=null)
             {
-                uploadImagetoFirestore()
-                myRef.child("Users").child("username").setValue(usernameTxt.text)
-                myRef.child("Users").child("phno").setValue(phnoTxt.text)
-                startActivity(Intent(this,MainActivity::class.java))
+              //  uploadImagetoFirestore()
+                var currentUser= mAuth!!.currentUser
+                myRef.child(currentUser!!.uid).child("username").setValue(usernameTxt.text.toString())
+                myRef.child(currentUser!!.uid).child("phno").setValue(phnoTxt.text.toString())
+               startActivity(Intent(this,FetchPhoneContacts::class.java))
             }
         }
     }
@@ -113,7 +114,7 @@ class NewUserRegisteration : AppCompatActivity() {
 
                     Toast.makeText(this,"Logged in Successfully!!", Toast.LENGTH_LONG).show()
                     createAccBtn.visibility=View.VISIBLE
-                    startActivity(Intent(this,FetchPhoneContacts::class.java))
+                  //  startActivity(Intent(this,FetchPhoneContacts::class.java))
                 }
             }
     }
