@@ -29,19 +29,19 @@ class PhoneAuthentication : AppCompatActivity() {
             startActivity(Intent(this,NewUserRegisteration::class.java))
         }
     }
-//    override fun onStart() {
-//        super.onStart()
-//        if(mAuth.currentUser!=null)
-//        {
-//            val intent=Intent(this, FetchPhoneContacts::class.java)
-//            intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            startActivity(intent)
-//
-//        }
-//        else{
-//            Toast.makeText(this,"Please Sign In!!",Toast.LENGTH_LONG).show()
-//        }
-//    }
+    override fun onStart() {
+        super.onStart()
+        if(mAuth.currentUser!=null)
+        {
+            val intent=Intent(this, FetchPhoneContacts::class.java)
+            intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+
+        }
+        else{
+            Toast.makeText(this,"Please Sign In!!",Toast.LENGTH_LONG).show()
+        }
+    }
 
 
     private fun verificationCallBacks()

@@ -127,8 +127,15 @@ class FetchPhoneContacts : AppCompatActivity() {
                         val phoneNo = pCur.getString(
                             pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER))
-                        var contactinfo=ContactInfo(phoneNo,name,id.toInt())
-                        listofItems.add(contactinfo)
+//                        if(checkContactInFirebase(phoneNo))
+//                        {
+                                checkContactInFirebase(phoneNo,name,id)
+
+//                            var contactinfo=ContactInfo(phoneNo,name,id.toInt())
+//                            listofItems.add(contactinfo)
+//                        }
+
+
                     }
                     pCur.close()
                 }
@@ -137,27 +144,44 @@ class FetchPhoneContacts : AppCompatActivity() {
         cur?.close()
    }
 
-    fun checkContactInFirebase(phno:String)
-    {
-    var dbRef= FirebaseDatabase.getInstance().getReference("Users")
-    dbRef.orderByChild("phno".replace("""[-, ,]""".toRegex(),"")).equalTo(phno.replace("""[-, ,]""".toRegex(),"")).
-        addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onCancelled(p0: DatabaseError) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+    private fun checkContactInFirebase(phno:String,name:String,id:String) {
 
-            override fun onDataChange(datasnapshot: DataSnapshot) {
-                if (datasnapshot.getValue() != null){
-                    //it means user already registered
-                        Log.d("DB","exists!! ${datasnapshot.getValue()}")
-                }else{
-                    //It is new user
+        var status:Int=0
+        var test:Boolean?= null
+        Log.d("DB","in func")
+        var dbRef = FirebaseDatabase.getInstance().getReference("Users")
+//        var query= dbRef.orderByChild("phno")
+//            .equalTo(phno.replace("""[-, ,(,)]""".toRegex(), ""))
 
-                }
-            }
+      //  Log.d("DB","DB ${query}")
+        dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
 
-        })
+                 override fun onCancelled(p0: DatabaseError) {
+
+                     //Log.d("DB","DB Error $p0")
+                 }
+
+                 override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                     for (data in dataSnapshot.getChildren()) {
+                        // Log.d("DB"," data exists $data")
+                         if (data.child("phno").exists()) {
+                             var temp ="+"+phno.replace("""[-, ,(,)]""".toRegex(), "")
+                            if(data.child("phno").value!!.equals(temp)) {
+                                var contactinfo=ContactInfo(phno,name,id.toInt())
+                                listofItems.add(contactinfo)
+                                Log.d("DB","inside $status data change ${data.child("phno").value} .. $temp")
+                                contactsAdapter!!.notifyDataSetChanged()
+                            }
+                         }
+                         else {
+                             Log.d("DB","inside else on data change $phno")
+
+                         }
+                     }
+
+                 }
+
+             })
     }
-
-
 }
