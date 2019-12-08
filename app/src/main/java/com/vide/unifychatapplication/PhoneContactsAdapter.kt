@@ -1,17 +1,16 @@
 package com.vide.unifychatapplication
-import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.row_contact_info.view.*
 
-class PhoneContactsAdapter(val context:Context, val contacts: ArrayList<ContactInfo>): RecyclerView.Adapter<CustomViewHolder>(){
+class PhoneContactsAdapter(val context: ContactsFragment, val contacts: ArrayList<ContactInfo>): RecyclerView.Adapter<CustomViewHolder>(){
 
     init {
-        setHasStableIds(true)
+        Log.d("CustomViewRow","PhoneContactsAdapter called")
     }
-
 
     override fun getItemCount(): Int {
         //return the count of list elements
@@ -23,14 +22,13 @@ class PhoneContactsAdapter(val context:Context, val contacts: ArrayList<ContactI
 
         val layoutInflater= LayoutInflater.from(parent.context)
         val cellForRow= layoutInflater.inflate(R.layout.row_contact_info,parent,false)
-
+        Log.d("CustomViewRow","in side on create view holder")
         return CustomViewHolder(cellForRow)
 
     }
 
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         // bind the content to display for each row
-        holder
         val contact=contacts[position]
         holder.setData(contact)
     }
@@ -49,6 +47,7 @@ class CustomViewHolder(val v:View):RecyclerView.ViewHolder(v) {
     //assign values to the Contact view
     fun setData(contact:ContactInfo?)
     {
+        Log.d("CustomViewRow","${contact!!.contactName}")
         v.contactNameTxt.text=contact!!.contactName
         v.phoneNoTxt.text=contact!!.phoneNumber.toString()
     }

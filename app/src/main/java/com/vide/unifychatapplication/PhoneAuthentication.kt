@@ -33,7 +33,8 @@ class PhoneAuthentication : AppCompatActivity() {
         super.onStart()
         if(mAuth.currentUser!=null)
         {
-            val intent=Intent(this, FetchPhoneContacts::class.java)
+            val intent=Intent(this, ChatandContactsTab::class.java)
+            //val intent=Intent(this, FetchPhoneContacts::class.java)
             intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
 
@@ -69,7 +70,8 @@ class PhoneAuthentication : AppCompatActivity() {
                 if(it.isSuccessful){
                     Toast.makeText(this,"Logged in Successfully!!",Toast.LENGTH_LONG).show()
                     //startActivity(Intent(this,FetchPhoneContacts::class.java))
-                    val intent=Intent(this, FetchPhoneContacts::class.java)
+                   // val intent=Intent(this, FetchPhoneContacts::class.java)
+                    val intent=Intent(this, ChatandContactsTab::class.java)
                     intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
                 }
