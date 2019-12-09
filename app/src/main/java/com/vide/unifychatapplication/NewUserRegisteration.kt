@@ -54,10 +54,27 @@ class NewUserRegisteration : AppCompatActivity() {
         createAccBtn.setOnClickListener{
             if(usernameTxt.text!=null && phnoTxt.text!=null)
             {
+                var temp:String
+                if(phnoTxt.text.startsWith("+1"))
+                {
+                    temp =phnoTxt.text.replace("""[-, ,(,)]""".toRegex(), "")
+                }
+                else if(phnoTxt.text.startsWith("1"))
+                {
+                    temp ="+"+phnoTxt.text.replace("""[-, ,(,)]""".toRegex(), "")
+                }
+                else if(phnoTxt.text.startsWith("+91"))
+                {
+                    temp =phnoTxt.text.replace("""[-, ,(,)]""".toRegex(), "")
+                }
+                else
+                {
+                    temp="+1"+phnoTxt.text.replace("""[-, ,(,)]""".toRegex(), "")
+                }
               //  uploadImagetoFirestore()
                 var currentUser= mAuth!!.currentUser
                 myRef.child(currentUser!!.uid).child("username").setValue(usernameTxt.text.toString())
-                myRef.child(currentUser!!.uid).child("phno").setValue(phnoTxt.text.toString())
+                myRef.child(currentUser!!.uid).child("phno").setValue(temp)
                 myRef.child(currentUser!!.uid).child("userId").setValue(currentUser!!.uid)
                startActivity(Intent(this,ChatandContactsTab::class.java))
             }

@@ -1,4 +1,4 @@
-package com.vide.unifychatapplication
+package com.vide.unifychatapplication.Adapter
 
 import android.content.Context
 import androidx.fragment.app.Fragment

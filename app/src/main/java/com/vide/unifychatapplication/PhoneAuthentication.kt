@@ -69,9 +69,6 @@ class PhoneAuthentication : AppCompatActivity() {
             .addOnCompleteListener{
                 if(it.isSuccessful){
                     Toast.makeText(this,"Logged in Successfully!!",Toast.LENGTH_LONG).show()
-                    //startActivity(Intent(this,FetchPhoneContacts::class.java))
-                   // val intent=Intent(this, FetchPhoneContacts::class.java)
-                    //verify()
 
                 }
             }

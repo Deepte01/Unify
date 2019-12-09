@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.vide.unifychatapplication.Adapter.PhoneContactsAdapter
 import kotlinx.android.synthetic.main.viewphonecontacts.*
 
 
@@ -23,7 +24,7 @@ class FetchPhoneContacts : AppCompatActivity() {
     private val REQ_CONTACT_CODE:Int=100
     private val PICK_CONTACT_CODE:Int=101
     lateinit var listofItems:ArrayList<ContactInfo>
-    var contactsAdapter:PhoneContactsAdapter? =null
+    var contactsAdapter: PhoneContactsAdapter? =null
     lateinit var mAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {

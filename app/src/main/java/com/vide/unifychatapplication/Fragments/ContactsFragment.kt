@@ -1,4 +1,4 @@
-package com.vide.unifychatapplication
+package com.vide.unifychatapplication.Fragments
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,12 +19,15 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.vide.unifychatapplication.Adapter.PhoneContactsAdapter
+import com.vide.unifychatapplication.ContactInfo
+import com.vide.unifychatapplication.R
 
 class ContactsFragment: Fragment {
     private val REQ_CONTACT_CODE:Int=100
     private val PICK_CONTACT_CODE:Int=101
     lateinit var listofItems:ArrayList<ContactInfo>
-    var contactsAdapter:PhoneContactsAdapter? =null
+    var contactsAdapter: PhoneContactsAdapter? =null
     lateinit var mAuth: FirebaseAuth
     lateinit var myRecyclerView:RecyclerView
 
@@ -51,7 +53,8 @@ class ContactsFragment: Fragment {
 
          var inflate=inflater!!.inflate(R.layout.viewphonecontacts,container,false)
 
-         contactsAdapter=PhoneContactsAdapter(this,listofItems)
+         contactsAdapter=
+             PhoneContactsAdapter(this, listofItems)
          myRecyclerView= inflate.findViewById(R.id.contacts_recyclerView)
          myRecyclerView.layoutManager= LinearLayoutManager(activity)
          myRecyclerView.adapter=contactsAdapter
@@ -189,7 +192,8 @@ class ContactsFragment: Fragment {
                         Log.d("FetchContacts","comparing ${data.child("phno").value} .. $temp")
                         if(data.child("phno").value!!.equals(temp)) {
 
-                            var contactinfo=ContactInfo(phno,name,id.toInt())
+                            var contactinfo=
+                                ContactInfo(phno, name, id.toInt())
                             listofItems.add(contactinfo)
                             Log.d("FetchContacts","inside status data change ${data.child("phno").value} .. $temp")
                             contactsAdapter!!.notifyDataSetChanged()

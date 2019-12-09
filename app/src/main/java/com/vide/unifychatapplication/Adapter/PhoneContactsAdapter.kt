@@ -1,11 +1,14 @@
-package com.vide.unifychatapplication
+package com.vide.unifychatapplication.Adapter
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.vide.unifychatapplication.ContactInfo
+import com.vide.unifychatapplication.Fragments.ContactsFragment
+import com.vide.unifychatapplication.MessageActivity
+import com.vide.unifychatapplication.R
 import kotlinx.android.synthetic.main.row_contact_info.view.*
 
 class PhoneContactsAdapter(val context: ContactsFragment, val contacts: ArrayList<ContactInfo>): RecyclerView.Adapter<CustomViewHolder>(){
@@ -35,7 +38,7 @@ class PhoneContactsAdapter(val context: ContactsFragment, val contacts: ArrayLis
         holder.setData(contact)
 
         holder.itemView.setOnClickListener{
-            var intent= Intent(it.context,MessageActivity::class.java)
+            var intent= Intent(it.context, MessageActivity::class.java)
             intent.putExtra("userName",contact.contactName)
             intent.putExtra("phno",contact.phoneNumber)
             it.context.startActivity(intent)
@@ -54,7 +57,7 @@ class PhoneContactsAdapter(val context: ContactsFragment, val contacts: ArrayLis
 
 class CustomViewHolder(val v:View):RecyclerView.ViewHolder(v) {
     //assign values to the Contact view
-    fun setData(contact:ContactInfo?)
+    fun setData(contact: ContactInfo?)
     {
         Log.d("CustomViewRow","${contact!!.contactName}")
         v.contactNameTxt.text=contact!!.contactName

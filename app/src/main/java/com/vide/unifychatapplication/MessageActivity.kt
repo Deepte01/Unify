@@ -49,7 +49,7 @@ class MessageActivity : AppCompatActivity() {
             var message:String= typedMessage.text.toString()
             if(!message.equals(""))
             {
-              //  sendMessage(receiverPhoneNumber,message)
+
                 getPhoneNumber(fuser!!.currentUser!!.uid,receiverPhoneNumber,message)
             }
             else

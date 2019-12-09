@@ -5,6 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.vide.unifychatapplication.Adapter.ViewPagerAdapter
+import com.vide.unifychatapplication.Fragments.ChatFragment
+import com.vide.unifychatapplication.Fragments.ContactsFragment
 
 class ChatandContactsTab : AppCompatActivity() {
 
@@ -24,7 +27,11 @@ class ChatandContactsTab : AppCompatActivity() {
         //tabLayout!!.addTab(tabLayout!!.newTab().setText("Contacts"))
         tabLayout!!.tabGravity = TabLayout.GRAVITY_FILL
 
-        val adapter = ViewPagerAdapter(this, supportFragmentManager, tabLayout!!.tabCount)
+        val adapter = ViewPagerAdapter(
+            this,
+            supportFragmentManager,
+            tabLayout!!.tabCount
+        )
         adapter.AddFragment(ChatFragment(),"Chats")
         adapter.AddFragment(ContactsFragment(),"Contacts")
 
