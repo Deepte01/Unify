@@ -1,5 +1,6 @@
 package com.vide.unifychatapplication
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +20,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import kotlinx.android.synthetic.main.viewphonecontacts.*
 
 class ContactsFragment: Fragment {
     private val REQ_CONTACT_CODE:Int=100
@@ -38,9 +39,8 @@ class ContactsFragment: Fragment {
         mAuth = FirebaseAuth.getInstance()
         listofItems=ArrayList<ContactInfo>()
         Log.d("CustomViewRow","inside fragment oncreate")
-
-
     }
+
      override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,18 +67,24 @@ class ContactsFragment: Fragment {
 
     private fun checkPermission()
     {
+        Log.d("FetchContacts","inside checkPermission")
+
         if(Build.VERSION.SDK_INT>=23)
         {
-            if(ActivityCompat.checkSelfPermission(activity!!,android.Manifest.permission.READ_CONTACTS)!=
+            if(ContextCompat.checkSelfPermission(activity!!,Manifest.permission.READ_CONTACTS)!=
                 PackageManager.PERMISSION_GRANTED)
             {
                 //request for the permission to grant the access to the contacts
-                requestPermissions(arrayOf(android.Manifest.permission.READ_CONTACTS),REQ_CONTACT_CODE)
+                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS),REQ_CONTACT_CODE)
 
             }
         }
-        Log.d("FetchContacts","Permission Already Granted ")
+        else{
+            getContacts()
+        }
         getContacts()
+        Log.d("FetchContacts","Permission Already Granted ")
+
     }
 
     override fun onRequestPermissionsResult(
@@ -93,22 +99,25 @@ class ContactsFragment: Fragment {
                 {
                     // getContacts()// pickContact()
                     Log.d("FetchContacts","Permission Granted in result")
-                    checkPermission()
+                    getContacts()
                 }
                 else{
                     Toast.makeText(activity,"Cannot access phone contacts", Toast.LENGTH_LONG).show()
                 }
             }
             else ->{
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+                //getContacts()
             }
         }
 
+        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+       // getContacts()
     }
 
-    private fun getContacts() {
+     fun getContacts() {
         val cr = activity!!.contentResolver
-        val cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
+        Log.d("FetchContacts"," query ${cr!!.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)}")
+        val cur = cr!!.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
 
         if (cur!!.count > 0) {
             while (cur != null && cur.moveToNext()) {
@@ -145,9 +154,8 @@ class ContactsFragment: Fragment {
 
     private fun checkContactInFirebase(phno:String,name:String,id:String) {
 
-        var status:Int=0
-        var test:Boolean?= null
-        Log.d("DB","in func")
+        var temp:String
+        Log.d("FetchContacts","in func check contacts from firebase")
         var dbRef = FirebaseDatabase.getInstance().getReference("Users")
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
 
@@ -161,17 +169,34 @@ class ContactsFragment: Fragment {
                 for (data in dataSnapshot.getChildren()) {
                     // Log.d("DB"," data exists $data")
                     if (data.child("phno").exists()) {
-                        var temp ="+"+phno.replace("""[-, ,(,)]""".toRegex(), "")
+                        if(phno.startsWith("+1"))
+                        {
+                            temp =phno.replace("""[-, ,(,)]""".toRegex(), "")
+                        }
+                        else if(phno.startsWith("1"))
+                        {
+                            temp ="+"+phno.replace("""[-, ,(,)]""".toRegex(), "")
+                        }
+                        else if(phno.startsWith("+91"))
+                        {
+                            temp =phno.replace("""[-, ,(,)]""".toRegex(), "")
+                        }
+                        else
+                        {
+                            temp="+1"+phno.replace("""[-, ,(,)]""".toRegex(), "")
+                        }
+
+                        Log.d("FetchContacts","comparing ${data.child("phno").value} .. $temp")
                         if(data.child("phno").value!!.equals(temp)) {
 
                             var contactinfo=ContactInfo(phno,name,id.toInt())
                             listofItems.add(contactinfo)
-                            Log.d("DB","inside $status data change ${data.child("phno").value} .. $temp")
+                            Log.d("FetchContacts","inside status data change ${data.child("phno").value} .. $temp")
                             contactsAdapter!!.notifyDataSetChanged()
                         }
                     }
                     else {
-                        Log.d("DB","inside else on data change $phno")
+                        Log.d("FetchContacts","inside else on data change $phno")
 
                     }
                 }

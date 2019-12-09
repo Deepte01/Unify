@@ -2,6 +2,7 @@ package com.vide.unifychatapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 
@@ -17,6 +18,7 @@ class ChatandContactsTab : AppCompatActivity() {
 
         tabLayout = findViewById<TabLayout>(R.id.tablayout_id)
         viewPager = findViewById<ViewPager>(R.id.viewpager_id)
+        Log.d("FragmentTabs","Inside Chat and contacts tab")
 
         //tabLayout!!.addTab(tabLayout!!.newTab().setText("Chats"))
         //tabLayout!!.addTab(tabLayout!!.newTab().setText("Contacts"))

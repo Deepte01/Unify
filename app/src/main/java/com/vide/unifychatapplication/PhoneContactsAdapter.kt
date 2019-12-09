@@ -1,8 +1,10 @@
 package com.vide.unifychatapplication
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.row_contact_info.view.*
 
@@ -31,6 +33,13 @@ class PhoneContactsAdapter(val context: ContactsFragment, val contacts: ArrayLis
         // bind the content to display for each row
         val contact=contacts[position]
         holder.setData(contact)
+
+        holder.itemView.setOnClickListener{
+            var intent= Intent(it.context,MessageActivity::class.java)
+            intent.putExtra("userName",contact.contactName)
+            intent.putExtra("phno",contact.phoneNumber)
+            it.context.startActivity(intent)
+        }
     }
     override fun getItemId(position: Int): Long {
         return position.toLong()

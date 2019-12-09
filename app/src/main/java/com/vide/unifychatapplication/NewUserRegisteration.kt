@@ -58,7 +58,8 @@ class NewUserRegisteration : AppCompatActivity() {
                 var currentUser= mAuth!!.currentUser
                 myRef.child(currentUser!!.uid).child("username").setValue(usernameTxt.text.toString())
                 myRef.child(currentUser!!.uid).child("phno").setValue(phnoTxt.text.toString())
-               startActivity(Intent(this,FetchPhoneContacts::class.java))
+                myRef.child(currentUser!!.uid).child("userId").setValue(currentUser!!.uid)
+               startActivity(Intent(this,ChatandContactsTab::class.java))
             }
         }
     }
