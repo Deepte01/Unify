@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.vide.unifychatapplication.ContactInfo
+import com.vide.unifychatapplication.Model.ContactInfo
 import com.vide.unifychatapplication.Fragments.ContactsFragment
 import com.vide.unifychatapplication.MessageActivity
 import com.vide.unifychatapplication.R

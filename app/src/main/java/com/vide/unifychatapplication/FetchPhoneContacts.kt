@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.vide.unifychatapplication.Adapter.PhoneContactsAdapter
+import com.vide.unifychatapplication.Model.ContactInfo
 import kotlinx.android.synthetic.main.viewphonecontacts.*
 
 
@@ -163,7 +164,11 @@ class FetchPhoneContacts : AppCompatActivity() {
                          if (data.child("phno").exists()) {
                              var temp ="+"+phno.replace("""[-, ,(,)]""".toRegex(), "")
                             if(data.child("phno").value!!.equals(temp)) {
-                                var contactinfo=ContactInfo(phno,name,id.toInt())
+                                var contactinfo= ContactInfo(
+                                    phno,
+                                    name,
+                                    id.toInt()
+                                )
                                 listofItems.add(contactinfo)
                                 Log.d("DB","inside $status data change ${data.child("phno").value} .. $temp")
                                 contactsAdapter!!.notifyDataSetChanged()

@@ -1,4 +1,4 @@
-package com.vide.unifychatapplication
+package com.vide.unifychatapplication.Model
 
 class ContactInfo {
     var phoneNumber: String? = null

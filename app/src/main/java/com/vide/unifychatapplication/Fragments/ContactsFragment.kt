@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.vide.unifychatapplication.Adapter.PhoneContactsAdapter
-import com.vide.unifychatapplication.ContactInfo
+import com.vide.unifychatapplication.Model.ContactInfo
 import com.vide.unifychatapplication.R
 
 class ContactsFragment: Fragment {
@@ -84,9 +83,9 @@ class ContactsFragment: Fragment {
             }
         }
         else{
-            getContacts()
+            //getContacts()
         }
-        //getContacts()
+        getContacts()
         Log.d("FetchContacts","Permission Already Granted ")
 
     }
@@ -173,6 +172,7 @@ class ContactsFragment: Fragment {
                 for (data in dataSnapshot.getChildren()) {
                     // Log.d("DB"," data exists $data")
                     if (data.child("phno").exists()) {
+                        //check the format of the phone numer and reset it to +1 format
                         if(phno.startsWith("+1"))
                         {
                             temp =phno.replace("""[-, ,(,)]""".toRegex(), "")
@@ -194,7 +194,11 @@ class ContactsFragment: Fragment {
                         if(data.child("phno").value!!.equals(temp)) {
 
                             var contactinfo=
-                                ContactInfo(temp, name, id.toInt())
+                                ContactInfo(
+                                    temp,
+                                    name,
+                                    id.toInt()
+                                )
                             listofItems.add(contactinfo)
                             Log.d("FetchContacts","inside status data change ${data.child("phno").value} .. $temp")
                             contactsAdapter!!.notifyDataSetChanged()
