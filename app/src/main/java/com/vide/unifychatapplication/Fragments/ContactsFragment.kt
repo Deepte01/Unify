@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -74,7 +75,7 @@ class ContactsFragment: Fragment {
 
         if(Build.VERSION.SDK_INT>=23)
         {
-            if(ContextCompat.checkSelfPermission(activity!!,Manifest.permission.READ_CONTACTS)!=
+            if(ContextCompat.checkSelfPermission(context!!,Manifest.permission.READ_CONTACTS)!=
                 PackageManager.PERMISSION_GRANTED)
             {
                 //request for the permission to grant the access to the contacts
@@ -85,7 +86,7 @@ class ContactsFragment: Fragment {
         else{
             getContacts()
         }
-        getContacts()
+        //getContacts()
         Log.d("FetchContacts","Permission Already Granted ")
 
     }
@@ -193,7 +194,7 @@ class ContactsFragment: Fragment {
                         if(data.child("phno").value!!.equals(temp)) {
 
                             var contactinfo=
-                                ContactInfo(phno, name, id.toInt())
+                                ContactInfo(temp, name, id.toInt())
                             listofItems.add(contactinfo)
                             Log.d("FetchContacts","inside status data change ${data.child("phno").value} .. $temp")
                             contactsAdapter!!.notifyDataSetChanged()
