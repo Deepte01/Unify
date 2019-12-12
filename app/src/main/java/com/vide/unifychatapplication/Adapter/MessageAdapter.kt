@@ -14,17 +14,20 @@ import com.google.firebase.database.ValueEventListener
 import com.vide.unifychatapplication.MessageActivity
 import com.vide.unifychatapplication.Model.ChatInfo
 import com.vide.unifychatapplication.R
+//import kotlinx.android.synthetic.main.chatpane_left.view.*
+//import kotlinx.android.synthetic.main.chatpane_right.view.*
 
 
 class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatInfo>): RecyclerView.Adapter<MessageViewHolder>(){
 
     private val MSG_TYPE_LEFT:Int =0
     private val MSG_TYPE_RIGHT:Int =1
-    lateinit var  mAuth: FirebaseAuth
+    var  mAuth: FirebaseAuth= FirebaseAuth.getInstance()
     var currentUserPhno:String?=null
 
     init {
         Log.d("MessageAdapter","MessageAdapter called")
+        checkPhoneumberInFirebase(mAuth!!.currentUser!!.uid)
     }
 
     override fun getItemCount(): Int {
@@ -55,7 +58,7 @@ class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatI
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         // bind the content to display for each row
         val chat=chatList[position]
-        holder.textmessage!!.text=chat.getMessage()
+        holder.setData(chat)
 
     }
     override fun getItemId(position: Int): Long {
@@ -63,16 +66,19 @@ class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatI
     }
 
     override fun getItemViewType(position: Int): Int {
-        mAuth=FirebaseAuth.getInstance()
+        //mAuth=FirebaseAuth.getInstance()
         var currentUser= mAuth!!.currentUser
-        checkPhoneumberInFirebase(currentUser!!.uid)
+        //checkPhoneumberInFirebase(currentUser!!.uid)
         Log.d("MessageAdapter","value of cur ph.no $currentUserPhno")
         if(chatList.get(position).getSender().equals(currentUserPhno))
         {
-        return MSG_TYPE_LEFT
-        }
-        else
+            Log.d("MessageAdapter","current User is sender ${chatList.get(position).getSender()}")
         return MSG_TYPE_RIGHT
+        }
+        else {
+            Log.d("MessageAdapter","current user is receiver")
+            return MSG_TYPE_LEFT
+        }
     }
 
     private fun checkPhoneumberInFirebase(userId:String) {
@@ -84,7 +90,8 @@ class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatI
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (data in dataSnapshot.getChildren()) {
                     if (data.key.toString().equals(userId)) {
-                        currentUserPhno=data.child("phno").toString()
+                        assignCurrentUserPhno(data.child("phno").getValue().toString())
+                        break
                     }
                 }
             }
@@ -95,15 +102,24 @@ class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatI
         })
     }
 
+    private fun assignCurrentUserPhno(phno:String)
+    {
+        currentUserPhno=phno
+    }
+
 }
 
 
 class MessageViewHolder(val v: View): RecyclerView.ViewHolder(v) {
-    //assign values to the chat view
-    var textmessage: TextView? =null
-   init {
-       textmessage= v!!.findViewById(R.id.text_message)
-   }
 
+    var chatMessage:TextView?=null
+    fun setData(chat: ChatInfo?)
+    {
+        //Log.d("CustomViewRow","${contact!!.contactName}")
+        //v.chat_message.text=chat!!.getMessage()!!
+        chatMessage=v.findViewById(R.id.chat_message)
+        chatMessage!!.text=chat!!.getMessage()
+
+    }
 }
 

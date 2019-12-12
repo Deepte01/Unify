@@ -12,13 +12,10 @@ import com.google.firebase.database.*
 import com.vide.unifychatapplication.Adapter.MessageAdapter
 import com.vide.unifychatapplication.Model.ChatInfo
 import com.google.firebase.database.DatabaseError
-import androidx.annotation.NonNull
-import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.FirebaseDatabase
-
-
+import kotlinx.android.synthetic.main.activity_message.*
 
 
 class MessageActivity : AppCompatActivity() {
@@ -29,10 +26,11 @@ class MessageActivity : AppCompatActivity() {
     lateinit var  toolbar: Toolbar
     lateinit var profile_image:ImageView
     lateinit var sendButton:ImageButton
-    lateinit var typedMessage:EditText
+    lateinit var typedMessage:String
     lateinit var receiverPhoneNumber:String
 
     lateinit var currentPhoneNumber:String
+   // lateinit var inputMessage:String
 
     //declaring the message adapter
 
@@ -55,7 +53,9 @@ class MessageActivity : AppCompatActivity() {
         contactName= findViewById(R.id.username)
         profile_image= findViewById(R.id.profile_image)
         sendButton= findViewById(R.id.sent_button)
-        typedMessage= findViewById(R.id.text_message)
+
+//        Log.d("MessageActivity"," typed message: ${typedMessage}")
+        //inputMessage=typedMessage.text.toString()
 
         chatList= ArrayList<ChatInfo>()
         messageAdapter= MessageAdapter(this,chatList)
@@ -63,6 +63,7 @@ class MessageActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager= LinearLayoutManager(this)
         recyclerView.adapter=messageAdapter
+        recyclerView.smoothScrollToPosition(messageAdapter.itemCount)
         recyclerView.setHasFixedSize(true)
 
         contactName.text=intent!!.getStringExtra("userName")
@@ -73,24 +74,22 @@ class MessageActivity : AppCompatActivity() {
         //getPhoneNumber()
 
         sendButton.setOnClickListener{
-            var message:String= typedMessage.text.toString()
-            if(!message.equals(""))
+          //  var message:String= typedMessage.text.toString()
+            typedMessage= text_message.text.toString()
+            if(!typedMessage.equals(""))
             {
-                Log.d("MessageActivity","inside sent btton ${fuser!!.currentUser!!.uid}, ${receiverPhoneNumber},$message")
-
-                getPhoneNumber(fuser!!.currentUser!!.uid,receiverPhoneNumber,message)
-                typedMessage.setText("")
+                Log.d("MessageActivity","inside sent btton ${fuser!!.currentUser!!.uid}, ${receiverPhoneNumber},$typedMessage")
+                getPhoneNumber(fuser!!.currentUser!!.uid,receiverPhoneNumber,typedMessage)
+                text_message.setText("")
             }
             else
             {
                 Toast.makeText(this,"The message cannot be empty",Toast.LENGTH_SHORT).show()
             }
-
         }
 
        // getPhoneNumber(fuser!!.currentUser!!.uid,receiverPhoneNumber,typedMessage.toString())
         readMessages(fuser!!.currentUser!!.uid, receiverPhoneNumber)
-
 
     }
 
@@ -187,19 +186,20 @@ class MessageActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 chatList.clear()
                 var chat:ChatInfo?=null
+                //typedMessage= text_message.text.toString()
+                //Log.d("MessageActivity","typed message is: ${typedMessage}")
                 for (data in dataSnapshot.children) {
-                    Log.d("MessageActivity","uid ${data.value}")
                     //var chat:ChatInfo= data.getValue() as ChatInfo
                     if((data.child("sender").getValue()!!.equals(myPhno) && data.child("receiver").getValue()!!.equals(userPhno)))
                     {
-                        chat=ChatInfo(myPhno,userPhno,typedMessage.toString())
+                        chat=ChatInfo(myPhno,userPhno,data.child("message").getValue().toString())
                         Log.d("MessageActivity","chat Object $chat")
                         chatList.add(chat)
                         messageAdapter.notifyDataSetChanged()
                     }
                     else if(data.child("sender").getValue()!!.equals(userPhno) && data.child("receiver").getValue()!!.equals(myPhno))
                     {
-                         chat=ChatInfo(userPhno,myPhno,typedMessage.toString())
+                         chat=ChatInfo(userPhno,myPhno,data.child("message").getValue().toString())
                         Log.d("MessageActivity","chat Object $chat")
                         chatList.add(chat)
                         messageAdapter.notifyDataSetChanged()
