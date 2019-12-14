@@ -15,37 +15,23 @@
         android:layout_marginTop="172dp"
         android:background="@drawable/rounded_edittext_register"
         android:ems="10"
-        android:hint="Please enter Phno:"
+        android:hint="Enter ph.no as +1xxxxxxxxx"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/verifyTxt"
-        android:layout_width="254dp"
-        android:layout_height="66dp"
-        android:layout_marginTop="36dp"
-        android:background="@drawable/rounded_edittext_register"
-        android:ems="10"
-        android:hint="Please enter verification code:"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.464"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phnoTxt" />
-
     <Button
         android:id="@+id/createAccBtn"
         android:layout_width="195dp"
         android:layout_height="46dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="80dp"
         android:background="@drawable/rounded_button"
-        android:text="Verify"
+        android:text="Get Verified"
         android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verifyTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/phnoTxt" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -91,8 +77,8 @@
 
     <Button
         android:id="@+id/createAccountBtn"
-        android:layout_width="146dp"
-        android:layout_height="55dp"
+        android:layout_width="136dp"
+        android:layout_height="44dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/rounded_button"
         android:text="Create Account"
@@ -102,6 +88,6 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/createAccBtn"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.034" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

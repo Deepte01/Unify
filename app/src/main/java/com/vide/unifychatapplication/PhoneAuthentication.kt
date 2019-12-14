@@ -10,6 +10,10 @@
     import com.google.firebase.auth.FirebaseAuth
     import com.google.firebase.auth.PhoneAuthCredential
     import com.google.firebase.auth.PhoneAuthProvider
+    import com.google.firebase.database.DataSnapshot
+    import com.google.firebase.database.DatabaseError
+    import com.google.firebase.database.FirebaseDatabase
+    import com.google.firebase.database.ValueEventListener
     import kotlinx.android.synthetic.main.activity_phone_authentication.*
     import java.util.concurrent.TimeUnit
     /*
@@ -20,7 +24,11 @@
 
         lateinit var  mcallbacks : PhoneAuthProvider.OnVerificationStateChangedCallbacks
         lateinit var  mAuth: FirebaseAuth
+        var listOfUserPhos=ArrayList<String>()
         lateinit var codeSent:String
+        init {
+            getUsers()
+        }
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -32,11 +40,22 @@
                 if(phnoTxt.text.toString().length<10 || phnoTxt.text.equals(""))
                 {
                     Toast.makeText(this,"Please enter a valid phone number",Toast.LENGTH_SHORT).show()
+
                 }
                else
                 {
-                    progressBar.visibility = View.VISIBLE
-                    verify()
+                    if(listOfUserPhos.contains(phnoTxt.text.toString()))
+                    {
+                        //verify the user only if he is a member of this app
+                        progressBar.visibility = View.VISIBLE
+                        verify()
+
+                    }
+                    else
+                    {
+                        Toast.makeText(this,"Please create an account",Toast.LENGTH_SHORT).show()
+                    }
+
                 }
             }
             createAccountBtn.setOnClickListener{
@@ -114,5 +133,27 @@
                 mcallbacks
             )
 
+        }
+        fun getUsers()
+        {
+            //to check if the input putnumber already exits to signin
+            var dbRef = FirebaseDatabase.getInstance().getReference("Users")
+            Log.d("PhoneAuthentication","in side get users}")
+
+
+            dbRef.addValueEventListener(object : ValueEventListener {
+
+                override fun onCancelled(p0: DatabaseError) {
+
+                    //Log.d("DB","DB Error $p0")
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                chatList.clear()
+                    for (data in dataSnapshot.children) {
+                        listOfUserPhos.add(data.child("phno").value.toString())
+                    }
+                }
+            })
         }
     }

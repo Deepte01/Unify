@@ -80,9 +80,10 @@ class ContactsFragment: Fragment {
 
         if(Build.VERSION.SDK_INT>=23)
         {
-            if(ContextCompat.checkSelfPermission(context!!,Manifest.permission.READ_CONTACTS)!=
+            if(ContextCompat.checkSelfPermission(activity!!,Manifest.permission.READ_CONTACTS)!=
                 PackageManager.PERMISSION_GRANTED)
             {
+                Log.d("FetchContacts","seeking permission")
                 //request for the permission to grant the access to the contacts
                 requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS),REQ_CONTACT_CODE)
 
@@ -101,6 +102,8 @@ class ContactsFragment: Fragment {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
+       // super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.d("FetchContacts","onRequestPermissionsResult")
         when(requestCode)
         {
             REQ_CONTACT_CODE ->{
@@ -109,14 +112,18 @@ class ContactsFragment: Fragment {
                     // getContacts()// pickContact()
                     //permission is granted to read the contacts
                     //Log.d("FetchContacts","Permission Granted in result")
+                    Log.d("FetchContacts","permission result: Granted")
                     getContacts()
                 }
                 else{
+                    Log.d("FetchContacts","permission result: Denied")
                     Toast.makeText(activity,"Cannot access phone contacts", Toast.LENGTH_LONG).show()
                 }
             }
             else ->{
                 //getContacts()
+
+                Log.d("FetchContacts","permission result: Denied")
             }
         }
 
