@@ -26,6 +26,9 @@ import kotlinx.android.synthetic.main.activity_phone_authentication.*
 import java.util.concurrent.TimeUnit
 
 
+/*
+This class is used for creating a new user for the first time
+ */
 class NewUserRegisteration : AppCompatActivity() {
 
     private var selectedImageURI:Uri?=null
@@ -41,18 +44,20 @@ class NewUserRegisteration : AppCompatActivity() {
         setContentView(R.layout.activity_new_user_registeration)
         mAuth=FirebaseAuth.getInstance()
 
+       // The image upload functionality is not working
         selectPhotoBtn.setOnClickListener{
             // select photo from the gallery
             val intent = Intent(Intent.ACTION_PICK)
             intent.type="image/*"
             startActivityForResult(intent,IMAGE_FETCH_CODE)
         }
+       //verify the user's phone number
         verifyBtn.setOnClickListener{
             createUserProgressBar.visibility=View.VISIBLE
             verify()
         }
         createAccBtn.setOnClickListener{
-            if(usernameTxt.text!=null && phnoTxt.text!=null)
+            if(usernameTxt.text!=null && phnoTxt.text!=null && phnoTxt.text.length<10)
             {
                 var temp:String
                 if(phnoTxt.text.startsWith("+1"))
@@ -86,9 +91,15 @@ class NewUserRegisteration : AppCompatActivity() {
                 }
 
             }
+            else
+            {
+                Toast.makeText(this,"Please enter valid details",Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
+
+    // select an image from the gallery
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode==100 && resultCode==Activity.RESULT_OK && data!=null)
@@ -101,6 +112,7 @@ class NewUserRegisteration : AppCompatActivity() {
             selectPhotoBtn.setBackgroundDrawable(bitmapDrawable)
         }
     }
+    //upload the image to irestore and retrieve the uri
     private fun uploadImagetoFirestore()
     {
         if (selectedImageURI==null)return
@@ -114,6 +126,7 @@ class NewUserRegisteration : AppCompatActivity() {
                 Log.d("Register","failed to upload")
             }
     }
+    //verifying the phone
     private fun verificationCallBacks()
     {
         mcallbacks = object: PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -133,6 +146,7 @@ class NewUserRegisteration : AppCompatActivity() {
         }
     }
 
+    //autho authenticate the phone
     private fun signIn(credential: PhoneAuthCredential) {
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener{
@@ -145,6 +159,7 @@ class NewUserRegisteration : AppCompatActivity() {
             }
     }
 
+    //get message to the phone
     private fun verify()
     {
         verificationCallBacks()

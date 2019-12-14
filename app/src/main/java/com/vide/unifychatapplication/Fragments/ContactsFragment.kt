@@ -23,6 +23,10 @@ import com.vide.unifychatapplication.Adapter.PhoneContactsAdapter
 import com.vide.unifychatapplication.Model.ContactInfo
 import com.vide.unifychatapplication.R
 
+/*
+ This class is used to display all the contacts from the phone
+ which exists in the firebase database
+ */
 class ContactsFragment: Fragment {
     private val REQ_CONTACT_CODE:Int=100
     private val PICK_CONTACT_CODE:Int=101
@@ -51,6 +55,7 @@ class ContactsFragment: Fragment {
         super.onCreateView(inflater, container, savedInstanceState)
          Log.d("CustomViewRow","inside fragment oncreate view")
 
+         //assign the adapter and layout to recycler view
          var inflate=inflater!!.inflate(R.layout.viewphonecontacts,container,false)
 
          contactsAdapter=
@@ -68,6 +73,7 @@ class ContactsFragment: Fragment {
     }
 
 
+    //check if the chat is having permission to read the contacts
     private fun checkPermission()
     {
         Log.d("FetchContacts","inside checkPermission")
@@ -101,7 +107,8 @@ class ContactsFragment: Fragment {
                 if(grantResults[0]== PackageManager.PERMISSION_GRANTED)
                 {
                     // getContacts()// pickContact()
-                    Log.d("FetchContacts","Permission Granted in result")
+                    //permission is granted to read the contacts
+                    //Log.d("FetchContacts","Permission Granted in result")
                     getContacts()
                 }
                 else{
@@ -117,6 +124,7 @@ class ContactsFragment: Fragment {
        // getContacts()
     }
 
+    //get the contacts from phone
      fun getContacts() {
         val cr = activity!!.contentResolver
 //        Log.d("FetchContacts"," query ${cr!!.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)}")
@@ -146,6 +154,8 @@ class ContactsFragment: Fragment {
                         val phoneNo = pCur.getString(
                             pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER))
+
+                        //check if fetched contact is in firebase
                                 checkContactInFirebase(phoneNo,name,id)
                     }
                     pCur.close()
@@ -155,6 +165,7 @@ class ContactsFragment: Fragment {
         cur?.close()
     }
 
+    //check if the contacts from pone are present in the database
     private fun checkContactInFirebase(phno:String,name:String,id:String) {
 
         var temp:String
@@ -199,6 +210,7 @@ class ContactsFragment: Fragment {
                                     name,
                                     id.toInt()
                                 )
+                            // if the contact is matched add it to the list
                             listofItems.add(contactinfo)
                             Log.d("FetchContacts","inside status data change ${data.child("phno").value} .. $temp")
                             contactsAdapter!!.notifyDataSetChanged()

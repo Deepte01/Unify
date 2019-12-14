@@ -17,6 +17,7 @@ import com.vide.unifychatapplication.R
 //import kotlinx.android.synthetic.main.chatpane_left.view.*
 //import kotlinx.android.synthetic.main.chatpane_right.view.*
 
+// This adapter is used for bidning the list of chats with the layout
 
 class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatInfo>): RecyclerView.Adapter<MessageViewHolder>(){
 
@@ -42,12 +43,14 @@ class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatI
 
         Log.d("MessageAdapter", "type view rt -> $viewType")
         if(viewType==MSG_TYPE_LEFT) {
+            // if the message is from sender, assign left chatpane layout
             cellForRow= layoutInflater.inflate(R.layout.chatpane_left, parent, false)
             Log.d("MessageAdapter", "type view right side")
             return MessageViewHolder(cellForRow)
         }
         else
         {
+            // if the message is from receiver, assign right chatpane layout
             cellForRow= layoutInflater.inflate(R.layout.chatpane_right, parent, false)
             Log.d("MessageAdapter", "type view left side")
             return MessageViewHolder(cellForRow)
@@ -70,6 +73,7 @@ class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatI
         var currentUser= mAuth!!.currentUser
         //checkPhoneumberInFirebase(currentUser!!.uid)
         Log.d("MessageAdapter","value of cur ph.no $currentUserPhno")
+        //check if the current user is a sender or a receiver
         if(chatList.get(position).getSender().equals(currentUserPhno))
         {
             Log.d("MessageAdapter","current User is sender ${chatList.get(position).getSender()}")
@@ -81,6 +85,8 @@ class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatI
         }
     }
 
+
+    //get the phone number of the current user from "Users" branch
     private fun checkPhoneumberInFirebase(userId:String) {
 
 

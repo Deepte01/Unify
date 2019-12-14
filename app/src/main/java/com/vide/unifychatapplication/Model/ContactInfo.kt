@@ -1,5 +1,9 @@
 package com.vide.unifychatapplication.Model
 
+
+/*
+This is a datastructure used for creating users in firebase database
+ */
 class ContactInfo {
     var phoneNumber: String? = null
     var contactName: String? = null

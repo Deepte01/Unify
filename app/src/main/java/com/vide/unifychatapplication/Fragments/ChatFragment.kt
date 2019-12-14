@@ -21,6 +21,7 @@ import com.vide.unifychatapplication.Model.ContactInfo
 import com.vide.unifychatapplication.Model.UserInfo
 import com.vide.unifychatapplication.R
 
+
 class ChatFragment: Fragment {
      constructor()
     {
@@ -46,6 +47,10 @@ class ChatFragment: Fragment {
         savedInstanceState: Bundle?
     ): View? {
 
+        /*
+        Assign the recycler view adapter and create a list of UserInfo objects
+        to display in the chat Tab.
+         */
         super.onCreateView(inflater, container, savedInstanceState)
         var inflate=inflater!!.inflate(R.layout.chat_fragment,container,false)
 
@@ -67,6 +72,9 @@ class ChatFragment: Fragment {
         return inflate
     }
 
+    /* read all the chats present in the database to decide who is the sender and
+    who is the receiver
+     */
     private  fun readChats()
     {
         dbRef.getReference("Users").addListenerForSingleValueEvent(object : ValueEventListener {
@@ -97,6 +105,8 @@ class ChatFragment: Fragment {
         })
 
     }
+
+    //get the phone number of the current user
     private fun getPhoneNumber(senderUid:String)
     {
 
@@ -124,6 +134,8 @@ class ChatFragment: Fragment {
             }
         })
     }
+
+    //get list of users with whom the current user had a chat
 
     private fun getChatUsers()
     {

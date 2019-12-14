@@ -5,6 +5,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
+/*
+This class has two fragments i.e chat and contacts.
+Each fragmet will have a recycler view
+This is used for creating tab layout
+ */
 class ViewPagerAdapter(private val myContext: Context, fm: FragmentManager, private var totalTabs: Int) : FragmentPagerAdapter(fm) {
 
      var listofFrgaments= ArrayList<Fragment>()

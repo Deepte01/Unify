@@ -2,6 +2,9 @@ package com.vide.unifychatapplication.Model
 
 import android.content.BroadcastReceiver
 
+/*
+This is a datastructure used for creating chats in firebase database
+ */
 class ChatInfo{
     private lateinit var sender:String
     private lateinit var receiver: String

@@ -11,6 +11,7 @@ import com.vide.unifychatapplication.MessageActivity
 import com.vide.unifychatapplication.R
 import kotlinx.android.synthetic.main.row_contact_info.view.*
 
+// This adapter is used to display the phone contacts in the contacts tab
 class PhoneContactsAdapter(val context: ContactsFragment, val contacts: ArrayList<ContactInfo>): RecyclerView.Adapter<CustomViewHolder>(){
 
     init {
@@ -59,6 +60,7 @@ class CustomViewHolder(val v:View):RecyclerView.ViewHolder(v) {
     //assign values to the Contact view
     fun setData(contact: ContactInfo?)
     {
+        // set the row of the contacts from the contact object
         Log.d("CustomViewRow","${contact!!.contactName}")
         v.contactNameTxt.text=contact!!.contactName
         v.phoneNoTxt.text=contact!!.phoneNumber.toString()

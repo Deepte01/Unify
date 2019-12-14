@@ -15,7 +15,7 @@ import com.vide.unifychatapplication.Model.UserInfo
 import com.vide.unifychatapplication.R
 import kotlinx.android.synthetic.main.row_contact_info.view.*
 
-
+// This is used for creating user's list on the chats fragment, which has a recycler view
 class UserAdapter(val context: ChatFragment, val userChatList: ArrayList<UserInfo>): RecyclerView.Adapter<UserViewHolder>(){
 
     init {
@@ -28,7 +28,7 @@ class UserAdapter(val context: ChatFragment, val userChatList: ArrayList<UserInf
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
-        // we need to create a view which can be used to show a row
+        // we need to create a view which can in which the user infromation can be shown
 
         val layoutInflater= LayoutInflater.from(parent.context)
         val cellForRow= layoutInflater.inflate(R.layout.row_contact_info,parent,false)
@@ -43,6 +43,7 @@ class UserAdapter(val context: ChatFragment, val userChatList: ArrayList<UserInf
         holder.setData(chat)
 
         holder.itemView.setOnClickListener{
+            // when a user is cliked in the chat fragment, that particular chat should open
             var intent= Intent(it.context, MessageActivity::class.java)
             intent.putExtra("userName",chat.getUsername())
             intent.putExtra("phno",chat.getPhno())
@@ -65,7 +66,7 @@ class UserViewHolder(val v: View): RecyclerView.ViewHolder(v) {
     //var chatMessage:TextView?=null
     fun setData(chat: UserInfo?)
     {
-
+        // set a row of the recycler view with contact name and phone number
         v.contactNameTxt.text=chat!!.getUsername()
         v.phoneNoTxt.text=""
 

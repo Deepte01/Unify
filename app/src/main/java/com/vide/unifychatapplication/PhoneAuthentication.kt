@@ -12,6 +12,9 @@
     import com.google.firebase.auth.PhoneAuthProvider
     import kotlinx.android.synthetic.main.activity_phone_authentication.*
     import java.util.concurrent.TimeUnit
+    /*
+    This function is to provide direct login to the app.
+     */
 
     class PhoneAuthentication : AppCompatActivity() {
 
@@ -26,14 +29,23 @@
             Log.d("PhoneAuthentication","${mAuth}")
             createAccBtn.setOnClickListener{
                 Log.d("PhoneAuthentication","verify button is clicked")
-                progressBar.visibility=View.VISIBLE
-                verify()
+                if(phnoTxt.text.toString().length<10 || phnoTxt.text.equals(""))
+                {
+                    Toast.makeText(this,"Please enter a valid phone number",Toast.LENGTH_SHORT).show()
+                }
+               else
+                {
+                    progressBar.visibility = View.VISIBLE
+                    verify()
+                }
             }
             createAccountBtn.setOnClickListener{
                 startActivity(Intent(this,NewUserRegisteration::class.java))
             }
         }
 
+        //check if the user is already signed in
+        //if already signedin, directly navigate to naext page
         override fun onStart() {
             super.onStart()
             if(mAuth.currentUser!=null)
@@ -50,6 +62,7 @@
         }
 
 
+        //verify the phone number by receiving the code in text message
         private fun verificationCallBacks()
         {
             mcallbacks = object: PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -73,6 +86,7 @@
             }
         }
 
+        //autodetect the message and signin
         private fun signIn(credential: PhoneAuthCredential) {
             mAuth.signInWithCredential(credential)
                 .addOnCompleteListener{
@@ -85,6 +99,7 @@
                 }
         }
 
+        //send a message to the phone
         private fun verify()
         {
             verificationCallBacks()

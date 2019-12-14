@@ -17,6 +17,10 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_message.*
 
+/*
+This class is used for displaying the sender and receiver chats.
+This class uses a layout which has a recycler view
+ */
 
 class MessageActivity : AppCompatActivity() {
 
@@ -41,6 +45,8 @@ class MessageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_message)
+
+        //get the layout and label the action bar with user name of the contact
         toolbar= findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.title=""
@@ -57,6 +63,8 @@ class MessageActivity : AppCompatActivity() {
 //        Log.d("MessageActivity"," typed message: ${typedMessage}")
         //inputMessage=typedMessage.text.toString()
 
+        //assign the recycler view adapter
+        //create a list for displaying chats
         chatList= ArrayList<ChatInfo>()
         messageAdapter= MessageAdapter(this,chatList)
 
@@ -73,12 +81,16 @@ class MessageActivity : AppCompatActivity() {
 
         //getPhoneNumber()
 
+        /*when the message is typed and hit the send button by the user
+         the message should be added to the database.
+         */
         sendButton.setOnClickListener{
             //  var message:String= typedMessage.text.toString()
             typedMessage= text_message.text.toString()
             if(!typedMessage.equals(""))
             {
                 Log.d("MessageActivity","inside sent btton ${fuser!!.currentUser!!.uid}, ${receiverPhoneNumber},$typedMessage")
+                //get the current phone number of the user
                 getPhoneNumber(fuser!!.currentUser!!.uid,receiverPhoneNumber,typedMessage)
                 text_message.setText("")
             }
@@ -89,10 +101,12 @@ class MessageActivity : AppCompatActivity() {
         }
 
         // getPhoneNumber(fuser!!.currentUser!!.uid,receiverPhoneNumber,typedMessage.toString())
+        //constantly read the messages present in the database
         readMessages(fuser!!.currentUser!!.uid, receiverPhoneNumber)
 
     }
 
+    //create a hashmap and insert the data in to database
     fun sendMessage(sender:String,receiver: String, message: String)
     {
         dbRef=FirebaseDatabase.getInstance().reference
@@ -105,6 +119,8 @@ class MessageActivity : AppCompatActivity() {
         dbRef.child("Chats").push().setValue(hashMap)
 
     }
+
+    //this is a asynchronous process so, call sendMessage from this method.
     private fun getPhoneNumber(senderUid:String,receiverPhoneNumber:String,message:String)
     {
         var dbRef = FirebaseDatabase.getInstance().getReference("Users")
@@ -125,8 +141,11 @@ class MessageActivity : AppCompatActivity() {
                     {
                         //Log.d("MessageActivity","child1 ${data.key.toString()}")
                         var phno:String=data.child("phno").value.toString()
+
+                        //set the global variable phone number to phno value using a function
                         currentPhoneNumber(phno)
                         Log.d("MessageActivity","child2 ${data.child("phno").value}")
+                        //call method to insert the sender, reciever and message into database
                         sendMessage(phno,receiverPhoneNumber,message)
                     }
                 }
@@ -141,6 +160,7 @@ class MessageActivity : AppCompatActivity() {
 
 
 
+    //to read messages frm the chats branch of the database, first check the phone number of the current user
     fun readMessages(senderUid:String,userPhno:String)
     {
         var dbRef = FirebaseDatabase.getInstance().getReference("Users")
@@ -164,6 +184,7 @@ class MessageActivity : AppCompatActivity() {
                     {
                         //Log.d("MessageActivity","child1 ${data.key.toString()}")
                         myPhno=data.child("phno").value.toString()
+                        //phone number is found, now call the method to read the messages
                         Log.d("MessageActivity","my phone num -> ${myPhno}, rev phone num ->${userPhno}")
                         saveMyPhoneNumber(myPhno,userPhno)
                     }
@@ -172,6 +193,9 @@ class MessageActivity : AppCompatActivity() {
         })
         Log.d("MessageActivity","final fetch ph.no")
     }
+
+    //this method reads the gets the chat from "Chats" database and converts each chat into a Chat object
+    //the chat object is added to the array list, to display sequence of messages
     fun saveMyPhoneNumber(myPhno:String,userPhno:String)
     {
         currentPhoneNumber=myPhno

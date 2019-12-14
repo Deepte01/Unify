@@ -40,6 +40,7 @@ class ChatandContactsTab : AppCompatActivity() {
         bundle.putString("uid",mAuth.uid)
         callChatsFrag.arguments=bundle
 
+        // add chat fragments and contact fragments to the tabs
         adapter.AddFragment(ChatFragment(),"Chats")
         adapter.AddFragment(ContactsFragment(),"Contacts")
 
@@ -49,6 +50,7 @@ class ChatandContactsTab : AppCompatActivity() {
 
         viewPager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
 
+        //assigning icons to display the type pf tabs
         tabLayout!!.getTabAt(0)!!.setIcon(R.drawable.ic_chat)
         tabLayout!!.getTabAt(1)!!.setIcon(R.drawable.ic_phone)
 
