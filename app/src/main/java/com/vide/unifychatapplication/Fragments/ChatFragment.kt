@@ -29,11 +29,12 @@ class ChatFragment: Fragment {
     init {
         mAuth= FirebaseAuth.getInstance()
         dbRef= FirebaseDatabase.getInstance()
-        getPhoneNumber(mAuth.currentUser!!.uid)
+      //  getPhoneNumber(mAuth.currentUser!!.uid)
     }
+
     lateinit var listofUsers:ArrayList<String>
     var userAdapter: UserAdapter? =null
-    lateinit var mAuth: FirebaseAuth
+    lateinit var mAuth:FirebaseAuth
     lateinit var myRecyclerView: RecyclerView
     lateinit var dbRef:FirebaseDatabase
     lateinit var currentPhoneNumber:String
@@ -48,43 +49,21 @@ class ChatFragment: Fragment {
         super.onCreateView(inflater, container, savedInstanceState)
         var inflate=inflater!!.inflate(R.layout.chat_fragment,container,false)
 
-        listofUsers=ArrayList<String>()
+        //var bundle: Bundle? =this!!.arguments
+        //var uid= bundle!!.getString("uid")
+
         mUserInfo= ArrayList<UserInfo>()
-
-
         userAdapter=UserAdapter(this, mUserInfo)
 
         myRecyclerView= inflate.findViewById(R.id.chats_recyclerView)
         myRecyclerView.layoutManager= LinearLayoutManager(activity)
         myRecyclerView.adapter=userAdapter
 
-        readChats()
+        Log.d("ChatFragmentmAuthcuruser", "${mAuth.currentUser}")
 
-//        dbRef.getReference("Chats").addValueEventListener(object : ValueEventListener{
-//            override fun onCancelled(p0: DatabaseError) {}
-//
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//            listofUsers.clear()
-//                for(data in dataSnapshot.children)
-//                {
-//                    var chat: ChatInfo? = dataSnapshot.getValue(ChatInfo::class.java)
-//
-//                    if(chat!!.getSender().equals(currentPhoneNumber))
-//                        {
-//                            listofUsers.add(chat.getReceiver())
-//                        }
-//                    if(chat!!.getReceiver().equals(currentPhoneNumber))
-//                    {
-//                        listofUsers.add(chat.getReceiver())
-//                    }
-//
-//
-//                }
-//
-//            }
-//
-//        })
 
+        listofUsers=ArrayList<String>()
+        getPhoneNumber(mAuth.currentUser!!.uid)
         return inflate
     }
 
@@ -99,21 +78,14 @@ class ChatFragment: Fragment {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                     mUserInfo.clear()
+               // Log.d("CharFragment","list of receivers: ${listofUsers}")
+
                 for (data in dataSnapshot.children) {
                     var userinfo:UserInfo?= data.getValue(UserInfo::class.java)
-                    if(userinfo!!.getuserId().equals(mAuth.currentUser!!.uid))
+
+                    for(num in listofUsers)
                     {
-                        if(mUserInfo.size!=0)
-                        {
-                            for(user in mUserInfo)
-                            {
-                                if(!userinfo.getuserId().equals(user.getuserId()))
-                                {
-                                    mUserInfo.add(userinfo)
-                                }
-                            }
-                        }
-                        else
+                        if(userinfo!!.getPhno().equals(num))
                         {
                             mUserInfo.add(userinfo)
                         }
@@ -148,8 +120,33 @@ class ChatFragment: Fragment {
                         Log.d("ChatFragment","child ${data.child("phno").value}")
                     }
                 }
+                getChatUsers()
+            }
+        })
+    }
+
+    private fun getChatUsers()
+    {
+        Log.d("ChatFragment","getting chat users list!")
+        Log.d("currentphnonumber: ","${currentPhoneNumber}")
+        dbRef.getReference("Chats").addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {}
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+           /// listofUsers.clear()
+                for(data in dataSnapshot.children)
+                {
+                    Log.d("sender: ","${data.child("sender").getValue().toString()}")
+                    Log.d("receiver: ","${data.child("receiver").getValue().toString()}")
+                    val reciever:String= data.child("receiver").getValue().toString()
+                    if(!listofUsers.contains(reciever)){
+                    listofUsers.add(data.child("receiver").getValue().toString())
+                    }
+                }
+                readChats()
 
             }
+
         })
     }
 

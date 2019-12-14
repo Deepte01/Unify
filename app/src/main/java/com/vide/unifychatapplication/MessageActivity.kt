@@ -30,7 +30,7 @@ class MessageActivity : AppCompatActivity() {
     lateinit var receiverPhoneNumber:String
 
     lateinit var currentPhoneNumber:String
-   // lateinit var inputMessage:String
+    // lateinit var inputMessage:String
 
     //declaring the message adapter
 
@@ -74,7 +74,7 @@ class MessageActivity : AppCompatActivity() {
         //getPhoneNumber()
 
         sendButton.setOnClickListener{
-          //  var message:String= typedMessage.text.toString()
+            //  var message:String= typedMessage.text.toString()
             typedMessage= text_message.text.toString()
             if(!typedMessage.equals(""))
             {
@@ -88,7 +88,7 @@ class MessageActivity : AppCompatActivity() {
             }
         }
 
-       // getPhoneNumber(fuser!!.currentUser!!.uid,receiverPhoneNumber,typedMessage.toString())
+        // getPhoneNumber(fuser!!.currentUser!!.uid,receiverPhoneNumber,typedMessage.toString())
         readMessages(fuser!!.currentUser!!.uid, receiverPhoneNumber)
 
     }
@@ -105,7 +105,7 @@ class MessageActivity : AppCompatActivity() {
         dbRef.child("Chats").push().setValue(hashMap)
 
     }
-   private fun getPhoneNumber(senderUid:String,receiverPhoneNumber:String,message:String)
+    private fun getPhoneNumber(senderUid:String,receiverPhoneNumber:String,message:String)
     {
         var dbRef = FirebaseDatabase.getInstance().getReference("Users")
         Log.d("MessageActivity","in side getphone numer}")
@@ -120,13 +120,13 @@ class MessageActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 for (data in dataSnapshot.children) {
-                        Log.d("MessageActivity","uid ${senderUid}, data-key ${data.key.toString()}")
+                    Log.d("MessageActivity","uid ${senderUid}, data-key ${data.key.toString()}")
                     if(data.key.toString().equals(senderUid))
                     {
-                    //Log.d("MessageActivity","child1 ${data.key.toString()}")
+                        //Log.d("MessageActivity","child1 ${data.key.toString()}")
                         var phno:String=data.child("phno").value.toString()
                         currentPhoneNumber(phno)
-                    Log.d("MessageActivity","child2 ${data.child("phno").value}")
+                        Log.d("MessageActivity","child2 ${data.child("phno").value}")
                         sendMessage(phno,receiverPhoneNumber,message)
                     }
                 }
@@ -141,7 +141,7 @@ class MessageActivity : AppCompatActivity() {
 
 
 
-     fun readMessages(senderUid:String,userPhno:String)
+    fun readMessages(senderUid:String,userPhno:String)
     {
         var dbRef = FirebaseDatabase.getInstance().getReference("Users")
         Log.d("MessageActivity","in side getphone numer}")
@@ -164,7 +164,7 @@ class MessageActivity : AppCompatActivity() {
                     {
                         //Log.d("MessageActivity","child1 ${data.key.toString()}")
                         myPhno=data.child("phno").value.toString()
-                        Log.d("MessageActivity","my phone num -> ${myPhno}")
+                        Log.d("MessageActivity","my phone num -> ${myPhno}, rev phone num ->${userPhno}")
                         saveMyPhoneNumber(myPhno,userPhno)
                     }
                 }
@@ -199,7 +199,7 @@ class MessageActivity : AppCompatActivity() {
                     }
                     else if(data.child("sender").getValue()!!.equals(userPhno) && data.child("receiver").getValue()!!.equals(myPhno))
                     {
-                         chat=ChatInfo(userPhno,myPhno,data.child("message").getValue().toString())
+                        chat=ChatInfo(userPhno,myPhno,data.child("message").getValue().toString())
                         Log.d("MessageActivity","chat Object $chat")
                         chatList.add(chat)
                         messageAdapter.notifyDataSetChanged()

@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "604216710587",
-    "firebase_url": "https://unifychatapplication.firebaseio.com",
-    "project_id": "unifychatapplication",
-    "storage_bucket": "unifychatapplication.appspot.com"
+    "project_number": "77712354255",
+    "firebase_url": "https://unifydeepika.firebaseio.com",
+    "project_id": "unifydeepika",
+    "storage_bucket": "unifydeepika.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:604216710587:android:bf4544e3386653a712609e",
+        "mobilesdk_app_id": "1:77712354255:android:1919bf1eb78e8829d2c0ba",
         "android_client_info": {
           "package_name": "com.vide.unifychatapplication"
         }
       },
       "oauth_client": [
         {
-          "client_id": "604216710587-9rc3d6ktpdlqv8ju392cfc1oeso0sptt.apps.googleusercontent.com",
+          "client_id": "77712354255-ajb9pogd7cslct6soqbc4kl2241cli62.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.vide.unifychatapplication",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "604216710587-hhq9jivqqfe9sjgev0cblk1hdd879tgr.apps.googleusercontent.com",
+          "client_id": "77712354255-63lqgnoq3m5i4k2q5l2rhhlbhf8p2403.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB9TPC3KjZ-vzE8smnUsDW97SNPIIf0uX4"
+          "current_key": "AIzaSyBCdSB7TI55fJUjXlhZ28aGF_MtzspocNY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "604216710587-hhq9jivqqfe9sjgev0cblk1hdd879tgr.apps.googleusercontent.com",
+              "client_id": "77712354255-63lqgnoq3m5i4k2q5l2rhhlbhf8p2403.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

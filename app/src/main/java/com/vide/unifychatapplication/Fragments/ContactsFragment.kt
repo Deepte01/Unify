@@ -119,7 +119,7 @@ class ContactsFragment: Fragment {
 
      fun getContacts() {
         val cr = activity!!.contentResolver
-        Log.d("FetchContacts"," query ${cr!!.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)}")
+//        Log.d("FetchContacts"," query ${cr!!.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)}")
         val cur = cr!!.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
 
         if (cur!!.count > 0) {

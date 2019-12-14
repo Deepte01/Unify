@@ -1,10 +1,12 @@
 package com.vide.unifychatapplication
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.vide.unifychatapplication.Adapter.ViewPagerAdapter
 import com.vide.unifychatapplication.Fragments.ChatFragment
 import com.vide.unifychatapplication.Fragments.ContactsFragment
@@ -18,6 +20,7 @@ class ChatandContactsTab : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatand_contacts_tab)
+        var mAuth=FirebaseAuth.getInstance()
 
         tabLayout = findViewById<TabLayout>(R.id.tablayout_id)
         viewPager = findViewById<ViewPager>(R.id.viewpager_id)
@@ -32,6 +35,11 @@ class ChatandContactsTab : AppCompatActivity() {
             supportFragmentManager,
             tabLayout!!.tabCount
         )
+        var callChatsFrag:ContactsFragment= ContactsFragment()
+        var bundle:Bundle= Bundle()
+        bundle.putString("uid",mAuth.uid)
+        callChatsFrag.arguments=bundle
+
         adapter.AddFragment(ChatFragment(),"Chats")
         adapter.AddFragment(ContactsFragment(),"Contacts")
 

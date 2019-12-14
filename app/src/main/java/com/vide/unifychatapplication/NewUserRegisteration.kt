@@ -72,11 +72,19 @@ class NewUserRegisteration : AppCompatActivity() {
                     temp="+1"+phnoTxt.text.replace("""[-, ,(,)]""".toRegex(), "")
                 }
               //  uploadImagetoFirestore()
-                var currentUser= mAuth!!.currentUser
-                myRef.child(currentUser!!.uid).child("username").setValue(usernameTxt.text.toString())
-                myRef.child(currentUser!!.uid).child("phno").setValue(temp)
-                myRef.child(currentUser!!.uid).child("userId").setValue(currentUser!!.uid)
-               startActivity(Intent(this,ChatandContactsTab::class.java))
+
+                try{
+                    var currentUser= mAuth!!.currentUser
+                    myRef.child(currentUser!!.uid).child("username").setValue(usernameTxt.text.toString())
+                    myRef.child(currentUser!!.uid).child("phno").setValue(temp)
+                    myRef.child(currentUser!!.uid).child("userId").setValue(currentUser!!.uid)
+
+                    startActivity(Intent(this,ChatandContactsTab::class.java))
+                }
+                catch (ex:Exception){
+                    Log.d("NewUserRegisteration","${ex.message}")
+                }
+
             }
         }
     }
