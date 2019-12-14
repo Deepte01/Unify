@@ -3,7 +3,7 @@ package com.vide.unifychatapplication.Model
 import android.R.id
 
 /*
-This is a datastructure used for retrieving the users from atabase
+This is a datastructure used for retrieving the users from database
  */
 
 class UserInfo{
