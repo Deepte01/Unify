@@ -27,6 +27,7 @@
         var listOfUserPhos=ArrayList<String>()
         lateinit var codeSent:String
         init {
+            // assign the list of phone numbers in this block since  it is a asynchronous process.
             getUsers()
         }
 
@@ -134,6 +135,10 @@
             )
 
         }
+        /*
+        get the list of all the phone numbers which are already registered with this app
+        and this list will be used to check if the input phone number provided by the user is already registered.
+         */
         fun getUsers()
         {
             //to check if the input putnumber already exits to signin

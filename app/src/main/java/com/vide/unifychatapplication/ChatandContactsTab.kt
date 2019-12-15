@@ -16,7 +16,7 @@ class ChatandContactsTab : AppCompatActivity() {
     private var tabLayout: TabLayout? = null
     private var viewPager: ViewPager? = null
 
-    //this activity is used for displaying tabs for contacts and chats
+    //this activity is used for displaying seperate tabs for contacts and chats
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatand_contacts_tab)
@@ -40,7 +40,7 @@ class ChatandContactsTab : AppCompatActivity() {
         bundle.putString("uid",mAuth.uid)
         callChatsFrag.arguments=bundle
 
-        // add chat fragments and contact fragments to the tabs
+        // add chat fragments and contact fragments to the tabs which are recyler views
         adapter.AddFragment(ChatFragment(),"Chats")
         adapter.AddFragment(ContactsFragment(),"Contacts")
 

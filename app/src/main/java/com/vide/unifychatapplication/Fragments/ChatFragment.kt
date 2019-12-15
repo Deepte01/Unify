@@ -21,6 +21,9 @@ import com.vide.unifychatapplication.Model.ContactInfo
 import com.vide.unifychatapplication.Model.UserInfo
 import com.vide.unifychatapplication.R
 
+/*
+This class is used to display the list of chats the user had.
+ */
 
 class ChatFragment: Fragment {
      constructor()
