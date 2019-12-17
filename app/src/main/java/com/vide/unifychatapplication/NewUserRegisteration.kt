@@ -57,7 +57,7 @@ class NewUserRegisteration : AppCompatActivity() {
             verify()
         }
         createAccBtn.setOnClickListener{
-            if(usernameTxt.text!=null && phnoTxt.text!=null && phnoTxt.text.length<10)
+            if(usernameTxt.text!=null && phnoTxt.text!=null && phnoTxt.text.length>10 && phnoTxt.text.length<13 )
             {
                 var temp:String
                 if(phnoTxt.text.startsWith("+1"))

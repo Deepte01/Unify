@@ -154,8 +154,11 @@ class ChatFragment: Fragment {
                     Log.d("sender: ","${data.child("sender").getValue().toString()}")
                     Log.d("receiver: ","${data.child("receiver").getValue().toString()}")
                     val reciever:String= data.child("receiver").getValue().toString()
-                    if(!listofUsers.contains(reciever)){
-                    listofUsers.add(data.child("receiver").getValue().toString())
+                    if(reciever.equals(currentPhoneNumber)) {
+                        val sender:String= data.child("sender").getValue().toString()
+                        if (!listofUsers.contains(sender)) {
+                            listofUsers.add(sender)
+                        }
                     }
                 }
                 readChats()

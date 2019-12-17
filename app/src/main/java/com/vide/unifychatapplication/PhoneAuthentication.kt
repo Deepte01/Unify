@@ -1,11 +1,16 @@
     package com.vide.unifychatapplication
 
+    import android.Manifest
     import android.content.Intent
+    import android.content.pm.PackageManager
+    import android.os.Build
     import androidx.appcompat.app.AppCompatActivity
     import android.os.Bundle
     import android.util.Log
     import android.view.View
     import android.widget.Toast
+    import androidx.core.app.ActivityCompat
+    import androidx.core.content.ContextCompat
     import com.google.firebase.FirebaseException
     import com.google.firebase.auth.FirebaseAuth
     import com.google.firebase.auth.PhoneAuthCredential
@@ -34,34 +39,65 @@
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setContentView(R.layout.activity_phone_authentication)
-            mAuth=FirebaseAuth.getInstance()
-            Log.d("PhoneAuthentication","${mAuth}")
-            createAccBtn.setOnClickListener{
-                Log.d("PhoneAuthentication","verify button is clicked")
-                if(phnoTxt.text.toString().length<10 || phnoTxt.text.equals(""))
-                {
-                    Toast.makeText(this,"Please enter a valid phone number",Toast.LENGTH_SHORT).show()
+            /*
+            * First check if the user is giving access to their phone contact list
+            * This is useful while fetching the contacts in the contacts fragment.
+            * */
+            if(Build.VERSION.SDK_INT>=23){
 
-                }
-               else
-                {
-                    if(listOfUserPhos.contains(phnoTxt.text.toString()))
-                    {
-                        //verify the user only if he is a member of this app
-                        progressBar.visibility = View.VISIBLE
-                        verify()
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_CONTACTS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                    //Permission not granted
+                    Log.d("PhoneAuthentication","Permission not granted")
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                            Manifest.permission.READ_CONTACTS)) {
+                        //Seeking Permission
+                        Log.d("PhoneAuthentication"," Seeking Permission ")
+                        ActivityCompat.requestPermissions(this,
+                            arrayOf(Manifest.permission.READ_CONTACTS),
+                            1)
 
+                    } else {
+                        ActivityCompat.requestPermissions(this,
+                            arrayOf(Manifest.permission.READ_CONTACTS),
+                            1)
                     }
-                    else
-                    {
-                        Toast.makeText(this,"Please create an account",Toast.LENGTH_SHORT).show()
-                    }
+                } else {
+                    //Permission already granted
+                    Log.d("PhoneAuthentication","Permission already granted")
+                    mAuth=FirebaseAuth.getInstance()
+                    Log.d("PhoneAuthentication","${mAuth}")
+                    createAccBtn.setOnClickListener{
+                        //verify button is clicked
+                        Log.d("PhoneAuthentication","verify button is clicked")
+                        if(phnoTxt.text.toString().length<10 || phnoTxt.text.equals(""))
+                        {
+                            Toast.makeText(this,"Please enter a valid phone number",Toast.LENGTH_SHORT).show()
 
+                        }
+                        else
+                        {
+                            if(listOfUserPhos.contains(phnoTxt.text.toString()))
+                            {
+                                //verify the user only if he is a member of this app
+                                progressBar.visibility = View.VISIBLE
+                                verify()
+
+                            }
+                            else
+                            {
+                                Toast.makeText(this,"Please create an account",Toast.LENGTH_SHORT).show()
+                            }
+
+                        }
+                    }
+                    createAccountBtn.setOnClickListener{
+                        startActivity(Intent(this,NewUserRegisteration::class.java))
+                    }
                 }
             }
-            createAccountBtn.setOnClickListener{
-                startActivity(Intent(this,NewUserRegisteration::class.java))
-            }
+
         }
 
         //check if the user is already signed in
@@ -80,8 +116,6 @@
                 Toast.makeText(this,"Please Sign In!!",Toast.LENGTH_LONG).show()
             }
         }
-
-
         //verify the phone number by receiving the code in text message
         private fun verificationCallBacks()
         {

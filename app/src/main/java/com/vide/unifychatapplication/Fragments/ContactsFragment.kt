@@ -69,107 +69,62 @@ class ContactsFragment: Fragment {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         Log.d("CustomViewRow","inside fragment onActivityCreated view")
-        checkPermission()
-    }
-
-
-    //check if the chat is having permission to read the contacts
-    private fun checkPermission()
-    {
-        Log.d("FetchContacts","inside checkPermission")
-
-        if(Build.VERSION.SDK_INT>=23)
-        {
-            if(ContextCompat.checkSelfPermission(activity!!,Manifest.permission.READ_CONTACTS)!=
-                PackageManager.PERMISSION_GRANTED)
-            {
-                Log.d("FetchContacts","seeking permission")
-                //request for the permission to grant the access to the contacts
-                requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS),REQ_CONTACT_CODE)
-
-            }
-        }
-        else{
-            //getContacts()
-        }
+        // already received the permission to access the contacts in the login activity
+        // so directly fetch the contacts from the getContacts method
         getContacts()
-        Log.d("FetchContacts","Permission Already Granted ")
-
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-       // super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.d("FetchContacts","onRequestPermissionsResult")
-        when(requestCode)
-        {
-            REQ_CONTACT_CODE ->{
-                if(grantResults[0]== PackageManager.PERMISSION_GRANTED)
-                {
-                    // getContacts()// pickContact()
-                    //permission is granted to read the contacts
-                    //Log.d("FetchContacts","Permission Granted in result")
-                    Log.d("FetchContacts","permission result: Granted")
-                    getContacts()
-                }
-                else{
-                    Log.d("FetchContacts","permission result: Denied")
-                    Toast.makeText(activity,"Cannot access phone contacts", Toast.LENGTH_LONG).show()
-                }
-            }
-            else ->{
-                //getContacts()
-
-                Log.d("FetchContacts","permission result: Denied")
-            }
-        }
-
-        //super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-       // getContacts()
     }
 
     //get the contacts from phone
      fun getContacts() {
-        val cr = activity!!.contentResolver
-//        Log.d("FetchContacts"," query ${cr!!.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)}")
-        val cur = cr!!.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
+        val cr = context!!.contentResolver
+      Log.d("FetchContacts"," inside get contacts")
 
-        if (cur!!.count > 0) {
-            while (cur != null && cur.moveToNext()) {
-                val id = cur.getString(
-                    cur.getColumnIndex(ContactsContract.Contacts._ID)
-                )
-                val name = cur.getString(
-                    cur.getColumnIndex(
-                        ContactsContract.Contacts.DISPLAY_NAME
+
+        try {
+            val cur = cr!!.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
+
+            if (cur!!.count > 0) {
+                while (cur != null && cur.moveToNext()) {
+                    val id = cur.getString(
+                        cur.getColumnIndex(ContactsContract.Contacts._ID)
                     )
-                )
-
-                if (cur.getInt(
+                    val name = cur.getString(
                         cur.getColumnIndex(
-                            ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0
-                ) {
-                    val pCur = cr.query(
-                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
-                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                        arrayOf(id), null
+                            ContactsContract.Contacts.DISPLAY_NAME
+                        )
                     )
-                    if (pCur!!.moveToNext()) {
-                        val phoneNo = pCur.getString(
-                            pCur.getColumnIndex(
-                                ContactsContract.CommonDataKinds.Phone.NUMBER))
 
-                        //check if fetched contact is in firebase
-                                checkContactInFirebase(phoneNo,name,id)
+                    if (cur.getInt(
+                            cur.getColumnIndex(
+                                ContactsContract.Contacts.HAS_PHONE_NUMBER
+                            )
+                        ) > 0
+                    ) {
+                        val pCur = cr.query(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                            arrayOf(id), null
+                        )
+                        if (pCur!!.moveToNext()) {
+                            val phoneNo = pCur.getString(
+                                pCur.getColumnIndex(
+                                    ContactsContract.CommonDataKinds.Phone.NUMBER
+                                )
+                            )
+
+                            //check if fetched contact is in firebase
+                            checkContactInFirebase(phoneNo, name, id)
+                        }
+                        pCur.close()
                     }
-                    pCur.close()
                 }
             }
+            cur?.close()
         }
-        cur?.close()
+        catch (e:Exception)
+        {
+            Log.d("FetchContacts","${e.message}")
+        }
     }
 
     //check if the contacts from pone are present in the database

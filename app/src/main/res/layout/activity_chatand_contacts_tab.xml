@@ -7,7 +7,25 @@
     tools:context=".ChatandContactsTab"
     android:orientation="vertical">
 
-
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBarLayout">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorGreenPrimary"
+            android:theme="@style/AppTheme"
+            app:popupTheme="@style/MenuStyle">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Unify"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorWhite"/>
+        </androidx.appcompat.widget.Toolbar>
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,6 +35,8 @@
         app:tabIndicatorColor="@color/colorWhite"
         android:id="@+id/tablayout_id">
     </com.google.android.material.tabs.TabLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
