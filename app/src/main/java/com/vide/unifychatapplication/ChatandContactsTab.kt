@@ -68,12 +68,15 @@ class ChatandContactsTab : AppCompatActivity() {
         tabLayout!!.getTabAt(1)!!.setIcon(R.drawable.ic_phone)
 
     }
+
+    //adding option to logout from the app
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.chatand_contacts_navigation, menu)
         return true
     }
 
+    //when logout button is selected from the menu go back to the login page!
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle item selection
         return when (item.itemId) {
