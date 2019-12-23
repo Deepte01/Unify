@@ -111,6 +111,7 @@ class MessageActivity : AppCompatActivity() {
     {
         dbRef=FirebaseDatabase.getInstance().reference
 
+        //create a hashmap to add the sender, receiver and message info to the database
         var hashMap= mutableMapOf<String,String>()
         hashMap.put("sender",sender!!)
         hashMap.put("receiver",receiver)
@@ -123,6 +124,7 @@ class MessageActivity : AppCompatActivity() {
     //this is a asynchronous process so, call sendMessage from this method.
     private fun getPhoneNumber(senderUid:String,receiverPhoneNumber:String,message:String)
     {
+        //this method is used for fetching the phone number of the current user
         var dbRef = FirebaseDatabase.getInstance().getReference("Users")
         Log.d("MessageActivity","in side getphone numer}")
 
@@ -137,6 +139,8 @@ class MessageActivity : AppCompatActivity() {
 
                 for (data in dataSnapshot.children) {
                     Log.d("MessageActivity","uid ${senderUid}, data-key ${data.key.toString()}")
+
+                    //check the uid of the current user in the list of database users
                     if(data.key.toString().equals(senderUid))
                     {
                         //Log.d("MessageActivity","child1 ${data.key.toString()}")
@@ -155,6 +159,7 @@ class MessageActivity : AppCompatActivity() {
     }
     fun currentPhoneNumber(phno:String)
     {
+        //use this method for assigning the current user's phone number to the global variable.
         currentPhoneNumber=phno
     }
 

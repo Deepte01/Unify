@@ -59,6 +59,7 @@ class NewUserRegisteration : AppCompatActivity() {
         createAccBtn.setOnClickListener{
             if(usernameTxt.text!=null && phnoTxt.text!=null && phnoTxt.text.length>10 && phnoTxt.text.length<13 )
             {
+                //first check the format of the date entered by the user
                 var temp:String
                 if(phnoTxt.text.startsWith("+1"))
                 {
@@ -80,6 +81,7 @@ class NewUserRegisteration : AppCompatActivity() {
 
                 try{
                     var currentUser= mAuth!!.currentUser
+                    // add the new user informatiom to the database
                     myRef.child(currentUser!!.uid).child("username").setValue(usernameTxt.text.toString())
                     myRef.child(currentUser!!.uid).child("phno").setValue(temp)
                     myRef.child(currentUser!!.uid).child("userId").setValue(currentUser!!.uid)
@@ -112,7 +114,7 @@ class NewUserRegisteration : AppCompatActivity() {
             selectPhotoBtn.setBackgroundDrawable(bitmapDrawable)
         }
     }
-    //upload the image to irestore and retrieve the uri
+    //upload the image to Firestore and retrieve the uri
     private fun uploadImagetoFirestore()
     {
         if (selectedImageURI==null)return
@@ -140,13 +142,17 @@ class NewUserRegisteration : AppCompatActivity() {
             }
 
             override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
+                // this method automatically sends the secret code as a message
                 super.onCodeSent(p0, p1)
             }
 
         }
     }
 
-    //autho authenticate the phone
+    //auto authenticate the phone
+    /*
+    This method validates the message received in the message to login
+     */
     private fun signIn(credential: PhoneAuthCredential) {
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener{
@@ -171,7 +177,7 @@ class NewUserRegisteration : AppCompatActivity() {
             TimeUnit.SECONDS,
             this,
             mcallbacks
-        )
+        ) // it is used to send the message to the phone
 
     }
 
