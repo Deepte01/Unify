@@ -59,7 +59,7 @@ class NewUserRegisteration : AppCompatActivity() {
         createAccBtn.setOnClickListener{
             if(usernameTxt.text!=null && phnoTxt.text!=null && phnoTxt.text.length>10 && phnoTxt.text.length<13 )
             {
-                //first check the format of the date entered by the user
+                //first check the format of the phone number entered by the user and convert it into required format
                 var temp:String
                 if(phnoTxt.text.startsWith("+1"))
                 {
@@ -85,10 +85,11 @@ class NewUserRegisteration : AppCompatActivity() {
                     myRef.child(currentUser!!.uid).child("username").setValue(usernameTxt.text.toString())
                     myRef.child(currentUser!!.uid).child("phno").setValue(temp)
                     myRef.child(currentUser!!.uid).child("userId").setValue(currentUser!!.uid)
-
+                    // navigate into the next activity
                     startActivity(Intent(this,ChatandContactsTab::class.java))
                 }
                 catch (ex:Exception){
+                    //display the message incase of an error
                     Log.d("NewUserRegisteration","${ex.message}")
                 }
 
@@ -114,7 +115,7 @@ class NewUserRegisteration : AppCompatActivity() {
             selectPhotoBtn.setBackgroundDrawable(bitmapDrawable)
         }
     }
-    //upload the image to Firestore and retrieve the uri
+    //upload the image to Firestore and retrieve the uri path of that image
     private fun uploadImagetoFirestore()
     {
         if (selectedImageURI==null)return

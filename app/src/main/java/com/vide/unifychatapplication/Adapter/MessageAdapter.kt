@@ -31,11 +31,13 @@ class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatI
         checkPhoneumberInFirebase(mAuth!!.currentUser!!.uid)
     }
 
+    //return the size of the chatList array list
     override fun getItemCount(): Int {
         //return the count of list elements
         return chatList.size
     }
 
+    //set the type of the layout used for displaying the chat messages
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         // we need to create a view which can be used to show a row
         val layoutInflater= LayoutInflater.from(parent.context)
@@ -58,16 +60,18 @@ class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatI
 
     }
 
+    //set the view holder to the MessageViewHolder class
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         // bind the content to display for each row
         val chat=chatList[position]
         holder.setData(chat)
-
     }
+
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
 
+    //check if the current user is a sender or a receiver and return MSG_TYPE
     override fun getItemViewType(position: Int): Int {
         //mAuth=FirebaseAuth.getInstance()
         var currentUser= mAuth!!.currentUser
@@ -91,6 +95,7 @@ class MessageAdapter(val context: MessageActivity, val chatList: ArrayList<ChatI
 
 
         var dbRef = FirebaseDatabase.getInstance().getReference("Users")
+        //fetch the current user's phone number using the function below
         dbRef.addListenerForSingleValueEvent(object : ValueEventListener {
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
