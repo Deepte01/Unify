@@ -86,16 +86,19 @@ class ContactsFragment: Fragment {
             if (cur!!.count > 0) {
                 while (cur != null && cur.moveToNext()) {
                     val id = cur.getString(
+                        //get the phone Id of each contact from the phone
                         cur.getColumnIndex(ContactsContract.Contacts._ID)
                     )
                     val name = cur.getString(
                         cur.getColumnIndex(
+                            //get the display name of each contact from the phone
                             ContactsContract.Contacts.DISPLAY_NAME
                         )
                     )
 
                     if (cur.getInt(
                             cur.getColumnIndex(
+                                //get the phone number of each contact from the phone
                                 ContactsContract.Contacts.HAS_PHONE_NUMBER
                             )
                         ) > 0
